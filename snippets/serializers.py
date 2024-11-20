@@ -12,4 +12,5 @@ class UserSerializer(serializers.ModelSerializer):
 class SnippetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Snippet
+        owner = serializers.ReadOnlyField(source='owner.username')
         fields = ['id', 'title', 'code', 'linenos', 'language', 'style']
