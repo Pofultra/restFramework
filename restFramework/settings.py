@@ -40,7 +40,9 @@ INSTALLED_APPS = [
     "rest_framework",
     "django_db_logger",
     "django_elasticsearch_dsl",
+    "django_elasticsearch_dsl_drf",
     "snippets",
+    "search_elastic"
 ]
 
 MIDDLEWARE = [
@@ -167,6 +169,6 @@ LOGGING = {
 
 ELASTICSEARCH_DSL = {
     'default': {
-        'hosts': 'localhost:9200',        
+        'hosts': 'http://localhost:9200',        
     }
 }
