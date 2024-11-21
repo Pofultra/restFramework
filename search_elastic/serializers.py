@@ -8,9 +8,9 @@ class SnippetDocumentSerializer(DocumentSerializer):
             'id',
             'title',
             'code',
-            'linenos',
+            # 'linenos',
             'language',
-            'style',
+            # 'style',
             'created',
             'owner',
         )

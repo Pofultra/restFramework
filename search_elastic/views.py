@@ -1,6 +1,7 @@
 from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet
 from django_elasticsearch_dsl_drf.filter_backends import (
     FilteringFilterBackend,
+    CompoundSearchFilterBackend,
 )
 from .serializers import SnippetDocumentSerializer
 from .documents import SnippetDocument
@@ -14,6 +15,7 @@ class SnippetViewSet(DocumentViewSet):
     # Puedes agregar filtros personalizados aquí
     filter_backends = [
         FilteringFilterBackend,
+        CompoundSearchFilterBackend,
     ]
 
     # Ejemplo de filtros personalizados
