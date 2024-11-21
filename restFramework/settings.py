@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "django_db_logger",
+    "django_elasticsearch_dsl",
     "snippets",
 ]
 
@@ -161,5 +162,11 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': False,
         }
+    }
+}
+
+ELASTICSEARCH_DSL = {
+    'default': {
+        'hosts': 'localhost:9200',        
     }
 }
