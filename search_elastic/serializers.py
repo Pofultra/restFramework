@@ -1,16 +1,34 @@
-from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
+from rest_framework import serializers
+
+from snippets.models import Snippet
 from .documents import SnippetDocument
 
-class SnippetDocumentSerializer(DocumentSerializer):
+class SnippetDocumentSerializer(serializers.ModelSerializer):
     class Meta:
+        model = Snippet
         document = SnippetDocument
-        fields = (
-            'id',
+        fields = [
+            'owner',
+            'highlighted',
+            'created',
             'title',
             'code',
-            # 'linenos',
+            'linenos',
             'language',
-            # 'style',
-            'created',
-            'owner',
-        )
+            'style',
+        ]
+
+    def to_representation(self, instance):
+        data = instance
+        # data = super().to_representation(instance)
+        if isinstance(instance.owner, dict):
+            data['owner'] = {
+                'id': instance.owner['id'],
+                'username': instance.owner['username'],
+            }
+        else:
+            data['owner'] = {
+                'id': instance.owner.id,
+                'username': instance.owner.username,
+            }
+        return data

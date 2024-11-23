@@ -1,12 +1,9 @@
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
+from rest_framework.routers import SimpleRouter
 
-from search_elastic import views
+from .views import SnippetViewSet
 
-# Create a router and register our ViewSets with it.
-router = DefaultRouter()
-router.register(r'search', views.SnippetViewSet, basename='search')
+router = SimpleRouter()
 
-urlpatterns = [
-    path('', include(router.urls)),
-]
+router.register("documents", SnippetViewSet, basename="snippet-search")
+
+urlpatterns = router.urls

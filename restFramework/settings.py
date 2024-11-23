@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -40,9 +44,8 @@ INSTALLED_APPS = [
     "rest_framework",
     "django_db_logger",
     "django_elasticsearch_dsl",
-    "django_elasticsearch_dsl_drf",
     "snippets",
-    "search_elastic"
+    "search_elastic",
 ]
 
 MIDDLEWARE = [
@@ -138,38 +141,36 @@ REST_FRAMEWORK = {
 }
 
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'verbose': {
-            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s"
         },
-        'simple': {
-            'format': '%(levelname)s %(asctime)s %(message)s'
+        "simple": {"format": "%(levelname)s %(asctime)s %(message)s"},
+    },
+    "handlers": {
+        "db_log": {
+            "level": "DEBUG",
+            "class": "django_db_logger.db_log_handler.DatabaseLogHandler",
         },
     },
-    'handlers': {
-        'db_log': {
-            'level': 'DEBUG',
-            'class': 'django_db_logger.db_log_handler.DatabaseLogHandler'
+    "loggers": {
+        "db": {"handlers": ["db_log"], "level": "DEBUG"},
+        "django.request": {  # logging 500 errors to database
+            "handlers": ["db_log"],
+            "level": "ERROR",
+            "propagate": False,
         },
     },
-    'loggers': {
-        'db': {
-            'handlers': ['db_log'],
-            'level': 'DEBUG'
-        },
-        'django.request': { # logging 500 errors to database
-            'handlers': ['db_log'],
-            'level': 'ERROR',
-            'propagate': False,
-        }
-    }
 }
 
 ELASTICSEARCH_DSL = {
-    'default': {
-        'hosts': 'http://localhost:9200',
-        'http_auth': ('elastic', 'ultra')
+    "default": {
+        "hosts": os.getenv("D_ES_DSL_HOSTS", "http://localhost:9200"),
+        "http_auth": (
+            os.getenv("D_ES_DSL_HTTP_AUTH_USER", "elastic"),
+            os.getenv("D_ES_DSL_HTTP_AUTH_PASS", "password"),
+        ),
     }
 }
